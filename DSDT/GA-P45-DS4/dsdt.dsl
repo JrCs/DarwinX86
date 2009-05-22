@@ -1463,6 +1463,35 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                         Return (API4)
                     }
                 }
+
+                Device (LAN0)
+                {
+                    Name (_ADR, Zero)
+                    Name (_PRW, Package (0x02)
+                    {
+                        0x0B,
+                        0x04
+                    })
+                    Method (_DSM, 4, NotSerialized)
+                    {
+                        Store (Package (0x04)
+                            {
+                                "built-in",
+                                Buffer (One)
+                                {
+                                    0x01
+                                },
+
+                                "device_type",
+                                Buffer (0x09)
+                                {
+                                    "ethernet"
+                                }
+                            }, Local0)
+                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                        Return (Local0)
+                    }
+                }
             }
 
             Device (PEX5)
@@ -1559,6 +1588,35 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     Else
                     {
                         Return (API5)
+                    }
+                }
+
+                Device (LAN1)
+                {
+                    Name (_ADR, Zero)
+                    Name (_PRW, Package (0x02)
+                    {
+                        0x0B,
+                        0x04
+                    })
+                    Method (_DSM, 4, NotSerialized)
+                    {
+                        Store (Package (0x04)
+                            {
+                                "built-in",
+                                Buffer (One)
+                                {
+                                    0x01
+                                },
+
+                                "device_type",
+                                Buffer (0x09)
+                                {
+                                    "ethernet"
+                                }
+                            }, Local0)
+                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                        Return (Local0)
                     }
                 }
             }
