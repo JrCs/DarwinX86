@@ -2348,40 +2348,12 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     })
                     Method (_STA, 0, NotSerialized)
                     {
-                        If (LGreaterEqual (OSFX, 0x03))
-                        {
-                            If (HPTF)
-                            {
                                 Return (0x0F)
-                            }
-                            Else
-                            {
-                                Return (Zero)
-                            }
-                        }
-                        Else
-                        {
-                            Return (Zero)
-                        }
                     }
 
                     Method (_CRS, 0, NotSerialized)
                     {
-                        If (LGreaterEqual (OSFX, 0x03))
-                        {
-                            If (HPTF)
-                            {
                                 Return (ATT3)
-                            }
-                            Else
-                            {
-                                Return (ATT4)
-                            }
-                        }
-                        Else
-                        {
-                            Return (ATT4)
-                        }
                     }
                 }
 
