@@ -2,14 +2,14 @@
  * Intel ACPI Component Architecture
  * AML Disassembler version 20080926
  *
- * Disassembly of dsdt.aml, Thu May 21 21:49:05 2009
+ * Disassembly of dsdt.aml, Fri May 22 10:51:51 2009
  *
  *
  * Original Table Header:
  *     Signature        "DSDT"
- *     Length           0x000035F3 (13811)
+ *     Length           0x000037D2 (14290)
  *     Revision         0x01 **** ACPI 1.0, no 64-bit math support
- *     Checksum         0x8B
+ *     Checksum         0x69
  *     OEM ID           "GBT   "
  *     OEM Table ID     "GBTUACPI"
  *     OEM Revision     0x00001000 (4096)
@@ -176,7 +176,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
         Return (One)
     }
 
-    OperationRegion (INFO, SystemMemory, 0x000FF840, 0x02)
+    OperationRegion (INFO, SystemMemory, 0x000FF840, One)
     Field (INFO, ByteAcc, NoLock, Preserve)
     {
         KBDI,   1, 
@@ -2163,6 +2163,12 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                             0x01,               // Alignment
                             0x10,               // Length
                             )
+                        IO (Decode16,
+                            0x04C0,             // Range Minimum
+                            0x04C0,             // Range Maximum
+                            0x01,               // Alignment
+                            0x40,               // Length
+                            )
                     })
                 }
 
@@ -3017,39 +3023,139 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                                     Store (DerefOf (Index (Arg3, Zero)), Local0)
                                     If (LLessEqual (Local0, 0x0E))
                                     {
-                                        If (LEqual (Local0, 0x0C))
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), Zero))
                                         {
-                                            Store (Zero, Local0)
+                                            Store (0xF0, SCP)
+                                            Store (Zero, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
                                         }
 
-                                        If (LEqual (Local0, 0x0D))
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), One))
                                         {
-                                            Store (Zero, Local0)
+                                            Store (0xF0, SCP)
+                                            Store (One, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
                                         }
 
-                                        Store (Local0, PRQC)
-                                        Return (Zero)
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x02))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x02, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x03))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x03, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x04))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x04, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x05))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x05, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x06))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x06, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x07))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x07, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x08))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x08, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x09))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x09, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x0A))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x0A, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x0B))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x0B, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x0C))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x0C, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (One)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x0D))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x0D, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (One)
+                                        }
+
+                                        If (LEqual (DerefOf (Index (Arg3, Zero)), 0x0E))
+                                        {
+                                            Store (0xF0, SCP)
+                                            Store (0x0E, PPRQ)
+                                            Store (0xF1, SCP)
+                                            Return (Zero)
+                                        }
+
+                                        Return (One)
                                     }
-
-                                    Return (One)
                                 }
 
                                 If (LEqual (Arg2, 0x03))
                                 {
-                                    If (LEqual (PPRP, Zero))
+                                    Name (TMP1, Package (0x02)
                                     {
-                                        Return (Package (0x02)
-                                        {
-                                            Zero, 
-                                            PPRQ
-                                        })
-                                    }
-
-                                    Return (Package (0x02)
-                                    {
-                                        One, 
-                                        Zero
+                                        Zero, 
+                                        Ones
                                     })
+                                    Store (PPRQ, Index (TMP1, One))
+                                    Return (TMP1)
                                 }
 
                                 If (LEqual (Arg2, 0x04))
