@@ -429,7 +429,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
     {
         Device (PWRB)
         {
-            Name (_HID, EisaId ("PNP0C0C"))
+            Name (_CID, EisaId ("PNP0C0C"))
             Method (_STA, 0, NotSerialized)
             {
                 Return (0x0B)
