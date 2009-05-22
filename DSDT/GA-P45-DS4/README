@@ -1,1 +1,3 @@
 Here you find the dsdt source file for the Gigabyte P45-DS4 Motherboard
+
+- Add section to use Vanilla High Definition Audio kext in Leopard 10.5.7

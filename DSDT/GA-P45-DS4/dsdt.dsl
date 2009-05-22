@@ -219,6 +219,39 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
         }
     }
 
+    Method (DTGP, 5, NotSerialized)
+    {
+        If (LEqual (Arg0, Buffer (0x10)
+                {
+                    /* 0000 */    0xC6, 0xB7, 0xB5, 0xA0, 0x18, 0x13, 0x1C, 0x44,
+                    /* 0008 */    0xB0, 0xC9, 0xFE, 0x69, 0x5E, 0xAF, 0x94, 0x9B
+                }))
+        {
+            If (LEqual (Arg1, One))
+            {
+                If (LEqual (Arg2, Zero))
+                {
+                    Store (Buffer (One)
+                        {
+                            0x03
+                        }, Arg4)
+                    Return (One)
+                }
+
+                If (LEqual (Arg2, One))
+                {
+                    Return (One)
+                }
+            }
+        }
+
+        Store (Buffer (One)
+            {
+                0x00
+            }, Arg4)
+        Return (Zero)
+    }
+
     Method (_WAK, 1, NotSerialized)
     {
         Store (0xFF, DBG1)
@@ -346,7 +379,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
             Notify (\_SB.PCI0.USBE, 0x02)
             Notify (\_SB.PCI0.USE2, 0x02)
             Notify (\_SB.PWRB, 0x02)
-            Notify (\_SB.PCI0.AZAL, 0x02)
+            Notify (\_SB.PCI0.HDEF, 0x02)
             Notify (\_SB.PCI0.IGBE, 0x02)
         }
 
@@ -4107,7 +4140,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 }
             }
 
-            Device (AZAL)
+            Device (HDEF)
             {
                 Name (_ADR, 0x001B0000)
                 Method (_PRW, 0, NotSerialized)
@@ -4117,6 +4150,44 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                         0x0D, 
                         0x05
                     })
+                }
+
+                Method (_DSM, 4, NotSerialized)
+                {
+                     Store (Package (0x0A)
+                         {
+                             "built-in",
+                             Buffer (One)
+                             {
+                                 0x00
+                             },
+
+                             "codec-id",
+                             Buffer (0x04)
+                             {
+                                 0x85, 0x08, 0xEC, 0x10
+                             },
+
+                             "layout-id",
+                             Buffer (0x04)
+                             {
+                                 0x79, 0x03, 0x00, 0x00
+                             },
+
+                             "device-type",
+                             Buffer (0x10)
+                             {
+                                 "Realtek ALC889a"
+                             },
+
+                             "PinConfigurations",
+                             Buffer (One)
+                             {
+                                 0x00
+                             }
+                         }, Local0)
+                     DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                     Return (Local0)
                 }
             }
 
