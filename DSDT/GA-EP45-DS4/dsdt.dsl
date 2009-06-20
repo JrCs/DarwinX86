@@ -1474,21 +1474,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     })
                     Method (_DSM, 4, NotSerialized)
                     {
-                        Store (Package (0x04)
-                            {
-                                "built-in",
-                                Buffer (One)
-                                {
-                                    0x01
-                                },
+                        Store (Package ()
+                        {
+                          "AAPL,slot-name", Buffer() { "Built In" },
+                          "model", Buffer() { "Realtek Semiconductor Co., Ltd. RTL8111/8168B PCI Express Gigabit Ethernet controller" },
+                        }, Local0)
 
-                                "device_type",
-                                Buffer (0x09)
-                                {
-                                    "ethernet"
-                                }
-                            }, Local0)
-                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0)) // Data injection
                         Return (Local0)
                     }
                 }
@@ -1601,21 +1593,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     })
                     Method (_DSM, 4, NotSerialized)
                     {
-                        Store (Package (0x04)
-                            {
-                                "built-in",
-                                Buffer (One)
-                                {
-                                    0x01
-                                },
+                        Store (Package ()
+                        {
+                          "AAPL,slot-name", Buffer() { "Built In" },
+                          "model", Buffer() { "Realtek Semiconductor Co., Ltd. RTL8111/8168B PCI Express Gigabit Ethernet controller" },
+                        }, Local0)
 
-                                "device_type",
-                                Buffer (0x09)
-                                {
-                                    "ethernet"
-                                }
-                            }, Local0)
-                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0)) // Data injection
                         Return (Local0)
                     }
                 }
@@ -4288,38 +4272,14 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
 
                 Method (_DSM, 4, NotSerialized)
                 {
-                     Store (Package (0x0A)
-                         {
-                             "built-in",
-                             Buffer (One)
-                             {
-                                 0x00
-                             },
-
-                             "codec-id",
-                             Buffer (0x04)
-                             {
-                                 0x85, 0x08, 0xEC, 0x10
-                             },
-
-                             "layout-id",
-                             Buffer (0x04)
-                             {
-                                 0x79, 0x03, 0x00, 0x00
-                             },
-
-                             "device-type",
-                             Buffer (0x10)
-                             {
-                                 "Realtek ALC889a"
-                             },
-
-                             "PinConfigurations",
-                             Buffer (One)
-                             {
-                                 0x00
-                             }
-                         }, Local0)
+                     Store (Package ()
+                     {
+                        "built-in",          Buffer(One) { 0x0 },
+                        "codec-id",          Buffer() { 0x85, 0x08, 0xEC, 0x10 },
+                        "layout-id",         Buffer() { 0x79, 0x03, 0x00, 0x00 },
+                        "device-type",       Buffer() { "Realtek ALC889a" },
+                        "PinConfigurations", Buffer(One) { 0x0 }
+                     }, Local0)
                      DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
                      Return (Local0)
                 }
