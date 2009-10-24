@@ -2,14 +2,14 @@
  * Intel ACPI Component Architecture
  * AML Disassembler version 20080926
  *
- * Disassembly of dsdt.aml, Fri May 22 10:51:51 2009
+ * Disassembly of dsdt.aml, Sat Oct 24 17:51:35 2009
  *
  *
  * Original Table Header:
  *     Signature        "DSDT"
- *     Length           0x000037D2 (14290)
+ *     Length           0x00003787 (14215)
  *     Revision         0x01 **** ACPI 1.0, no 64-bit math support
- *     Checksum         0x69
+ *     Checksum         0xFF
  *     OEM ID           "GBT   "
  *     OEM Table ID     "GBTUACPI"
  *     OEM Revision     0x00001000 (4096)
@@ -208,6 +208,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
             Store (ESMI, Local0)
             And (Local0, 0xFB, Local0)
             Store (Local0, ESMI)
+            Store (0x99, SMIP)
         }
 
         If (LEqual (Arg0, 0x04))
@@ -357,8 +358,6 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
         Method (_L0E, 0, NotSerialized)
         {
             Notify (\_SB.PCI0.USB3, 0x02)
-            Notify (\_SB.PWRB, 0x02)
-            Notify (\_SB.PCI0.US31, 0x02)
             Notify (\_SB.PWRB, 0x02)
         }
 
@@ -2205,12 +2204,6 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                             0x01,               // Alignment
                             0x10,               // Length
                             )
-                        IO (Decode16,
-                            0x04C0,             // Range Minimum
-                            0x04C0,             // Range Maximum
-                            0x01,               // Alignment
-                            0x40,               // Length
-                            )
                     })
                 }
 
@@ -3024,16 +3017,20 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
 
                                 If (LEqual (Arg2, One))
                                 {
-                                    Return (Buffer (0x04)
+                                    If (LEqual (SizeOf (Arg3), Zero))
                                     {
-                                        "1.0"
-                                    })
+                                        Return (Buffer (0x04)
+                                        {
+                                            "1.0"
+                                        })
+                                    }
+
+                                    Return (One)
                                 }
 
                                 If (LEqual (Arg2, 0x02))
                                 {
-                                    Store (DerefOf (Index (Arg3, Zero)), Local0)
-                                    If (LLessEqual (Local0, 0x0E))
+                                    If (LNotEqual (TPRS, Zero))
                                     {
                                         If (LEqual (DerefOf (Index (Arg3, Zero)), Zero))
                                         {
@@ -3157,6 +3154,8 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
 
                                         Return (One)
                                     }
+
+                                    Return (One)
                                 }
 
                                 If (LEqual (Arg2, 0x03))
@@ -3245,7 +3244,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                                 0x0400,             // Range Minimum
                                 0x0400,             // Range Maximum
                                 0x01,               // Alignment
-                                0xC0,               // Length
+                                0xD0,               // Length
+                                )
+                            IO (Decode16,
+                                0x04D2,             // Range Minimum
+                                0x04D2,             // Range Maximum
+                                0x01,               // Alignment
+                                0x2E,               // Length
                                 )
                         })
                         Return (BUF0)
@@ -3324,26 +3329,6 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
             }
 
             Device (USB3)
-            {
-                Name (_ADR, 0x001D0003)
-                Method (_S3D, 0, NotSerialized)
-                {
-                    If (LEqual (OSFL, 0x02))
-                    {
-                        Return (0x02)
-                    }
-
-                    Return (0x03)
-                }
-
-                Name (_PRW, Package (0x02)
-                {
-                    0x0E, 
-                    0x03
-                })
-            }
-
-            Device (US31)
             {
                 Name (_ADR, 0x001A0000)
                 Method (_S3D, 0, NotSerialized)
@@ -4846,7 +4831,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 Name (BUF0, ResourceTemplate ()
                 {
                     Memory32Fixed (ReadWrite,
-                        0xE0000000,         // Address Base
+                        0xF4000000,         // Address Base
                         0x04000000,         // Address Length
                         )
                 })
