@@ -1466,17 +1466,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 Device (LAN0)
                 {
                     Name (_ADR, Zero)
-                    Name (_PRW, Package (0x02)
-                    {
-                        0x0B,
-                        0x04
-                    })
                     Method (_DSM, 4, NotSerialized)
                     {
                         Store (Package ()
                         {
                           "AAPL,slot-name", Buffer() { "Built In" },
                           "model", Buffer() { "Realtek Semiconductor Co., Ltd. RTL8111/8168B PCI Express Gigabit Ethernet controller" },
+                          "location", Buffer() { "1" }
                         }, Local0)
 
                         DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0)) // Data injection
@@ -1585,17 +1581,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 Device (LAN1)
                 {
                     Name (_ADR, Zero)
-                    Name (_PRW, Package (0x02)
-                    {
-                        0x0B,
-                        0x04
-                    })
                     Method (_DSM, 4, NotSerialized)
                     {
                         Store (Package ()
                         {
                           "AAPL,slot-name", Buffer() { "Built In" },
                           "model", Buffer() { "Realtek Semiconductor Co., Ltd. RTL8111/8168B PCI Express Gigabit Ethernet controller" },
+                          "location", Buffer() { "2" }
                         }, Local0)
 
                         DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0)) // Data injection
