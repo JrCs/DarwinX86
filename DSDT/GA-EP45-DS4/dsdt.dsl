@@ -2337,6 +2337,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                             0x00,               // Alignment
                             0x02,               // Length
                             )
+                        IRQNoFlags () {8}
                     })
                     Name (ATT1, ResourceTemplate ()
                     {
