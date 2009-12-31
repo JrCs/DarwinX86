@@ -134,6 +134,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
         APMD,   8
     }
 
+    OperationRegion (PMRS, SystemIO, 0x0430, One)
+    Field (PMRS, ByteAcc, NoLock, Preserve)
+    {
+            ,   4,
+        SLPE,   1
+    }
+
     OperationRegion (AGPS, SystemIO, 0x0438, 0x04)
     Field (AGPS, ByteAcc, NoLock, Preserve)
     {
@@ -196,6 +203,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
         }
     }
 
+    // _PTS (Prepare To Sleep)
+    //     ARG0: sleeping state (1 for S1, 2 for S2, etc.)
+    //
+    //     S5 is the soft-off state (shutdown)
     Method (_PTS, 1, NotSerialized)
     {
         Or (Arg0, 0xF0, Local0)
@@ -205,10 +216,8 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
         If (LEqual (Arg0, 0x03)) {}
         If (LEqual (Arg0, 0x05))
         {
-            Store (ESMI, Local0)
-            And (Local0, 0xFB, Local0)
-            Store (Local0, ESMI)
-            Store (0x99, SMIP)
+            Store (Zero, SLPE)
+            Sleep(0x10)
         }
 
         If (LEqual (Arg0, 0x04))
