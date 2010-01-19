@@ -1,7 +1,6 @@
 Here you find the dsdt source file for the Gigabyte GA-EP45-DS4 Motherboard
 
 - HPET Fix
-- RTC Fix
 - AppleRTC Fix
 - CMOS reset fix
 - Add LAN devices to fix Time Machine and UUID bugs
@@ -9,6 +8,7 @@ Here you find the dsdt source file for the Gigabyte GA-EP45-DS4 Motherboard
 - Activation of Power Button
 - Shutdown Fix
 - EHCI USB Ports sleeping fix
+- AppleLPC fix
 
 Other infos:
 - Don't try to force pciroot to be 0 because it can cause some problems like the impossible to use an Atheros based PCI WLAN board with Gigabyte EP45 motherboards

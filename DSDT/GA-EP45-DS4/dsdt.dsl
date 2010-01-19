@@ -343,7 +343,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
     {
         Method (_L08, 0, NotSerialized)
         {
-            Notify (\_SB.PCI0.PX40.UAR1, 0x02)
+            Notify (\_SB.PCI0.LPCB.UAR1, 0x02)
         }
 
         Method (_L03, 0, NotSerialized)
@@ -1841,13 +1841,27 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 }
             }
 
-            Device (PX40)
+            Device (LPCB) // Rename from PX40
             {
                 Name (_ADR, 0x001F0000)
+
+                Method (_DSM, 4, NotSerialized) // Inject device-id to load AppleLPC
+                                                // using a device (3A18) near to our
+                                                // own device id (3A16)
+                {
+                    Store (Package ()
+                    {
+                        "device-id", Buffer() { 0x18, 0x3A, 0x00, 0x00 }
+                    }, Local0)
+
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0)) // Data injection
+                    Return (Local0)
+                }
+
                 OperationRegion (PREV, PCI_Config, 0x08, One)
                 Scope (\)
                 {
-                    Field (\_SB.PCI0.PX40.PREV, ByteAcc, NoLock, Preserve)
+                    Field (\_SB.PCI0.LPCB.PREV, ByteAcc, NoLock, Preserve)
                     {
                         REV0,   8
                     }
@@ -1856,7 +1870,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 OperationRegion (PIRQ, PCI_Config, 0x60, 0x04)
                 Scope (\)
                 {
-                    Field (\_SB.PCI0.PX40.PIRQ, ByteAcc, NoLock, Preserve)
+                    Field (\_SB.PCI0.LPCB.PIRQ, ByteAcc, NoLock, Preserve)
                     {
                         PIRA,   8, 
                         PIRB,   8, 
@@ -1868,7 +1882,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 OperationRegion (PIR2, PCI_Config, 0x68, 0x04)
                 Scope (\)
                 {
-                    Field (\_SB.PCI0.PX40.PIR2, ByteAcc, NoLock, Preserve)
+                    Field (\_SB.PCI0.LPCB.PIR2, ByteAcc, NoLock, Preserve)
                     {
                         PIRE,   8, 
                         PIRF,   8, 
@@ -1880,7 +1894,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 OperationRegion (LPIO, PCI_Config, 0x80, 0x0E)
                 Scope (\)
                 {
-                    Field (\_SB.PCI0.PX40.LPIO, ByteAcc, NoLock, Preserve)
+                    Field (\_SB.PCI0.LPCB.LPIO, ByteAcc, NoLock, Preserve)
                     {
                         UAIO,   8, 
                         PRIO,   8, 
@@ -2235,8 +2249,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                             0x01,               // Alignment
                             0x02,               // Length
                             )
-                        IRQNoFlags ()
-                            {2}
+                        /* No IRQ so AppleLPC work fine */
+                        /* IRQNoFlags ()
+                            {2} */
                     })
                 }
 
@@ -2299,21 +2314,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     })
                     Method (_CRS, 0, NotSerialized)
                     {
-                        If (LGreaterEqual (OSFX, 0x03))
-                        {
-                            If (HPTF)
-                            {
-                                Return (ATT6)
-                            }
-                            Else
-                            {
-                                Return (ATT5)
-                            }
-                        }
-                        Else
-                        {
-                            Return (ATT5)
-                        }
+                        Return (ATT6) /* No IRQ so AppleLPC work fine */
                     }
                 }
 
@@ -2917,7 +2918,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     })
                 }
 
-                Scope (\_SB.PCI0.PX40)
+                Scope (\_SB.PCI0.LPCB)
                 {
                     OperationRegion (CCCC, SystemMemory, 0x000FE2BC, 0x05)
                     Field (CCCC, ByteAcc, NoLock, Preserve)
