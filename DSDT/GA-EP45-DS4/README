@@ -9,6 +9,7 @@ Here you find the dsdt source file for the Gigabyte GA-EP45-DS4 Motherboard
 - Shutdown Fix
 - EHCI USB Ports sleeping fix
 - AppleLPC fix
+- Resume after sleep fix (http://www.insanelymac.com/forum/index.php?showtopic=192518&st=609)
 
 Other infos:
 - Don't try to force pciroot to be 0 because it can cause some problems like the impossible to use an Atheros based PCI WLAN board with Gigabyte EP45 motherboards

@@ -216,8 +216,15 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
         If (LEqual (Arg0, 0x03)) {}
         If (LEqual (Arg0, 0x05))
         {
+            Store (One, \_SB.PCI0.LPCB.AG3E) // Return to S5 after a power failure
+                                             // Mimic "Start up automatically after power failure" checkbox
+                                             // on Energy Saver (Preferences).
             Store (Zero, SLPE)
             Sleep(0x10)
+        }
+        Else
+        {
+            Store (Zero, \_SB.PCI0.LPCB.AG3E )   // Resume after sleep fix
         }
 
         If (LEqual (Arg0, 0x04))
@@ -1856,6 +1863,12 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
 
                     DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0)) // Data injection
                     Return (Local0)
+                }
+
+                // For _PTS to fix resume after sleep
+                OperationRegion (LPC0, PCI_Config, 0xA4, 0x02)    // General PM Configuration 3 Register (ICH10.pdf / 13.8.1.3 / page 454)
+                Field (LPC0, ByteAcc, NoLock, Preserve) {
+                    AG3E, 1    // Bit 0 – AFTERG3_EN
                 }
 
                 OperationRegion (PREV, PCI_Config, 0x08, One)
