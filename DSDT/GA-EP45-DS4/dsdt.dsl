@@ -313,12 +313,12 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
             }
         }
 
-        Notify (\_SB.PCI0.USB0, Zero)
-        Notify (\_SB.PCI0.USB1, Zero)
-        Notify (\_SB.PCI0.USB2, Zero)
-        Notify (\_SB.PCI0.USB3, Zero)
-        Notify (\_SB.PCI0.USB4, Zero)
-        Notify (\_SB.PCI0.USB5, Zero)
+        Notify (\_SB.PCI0.UHC1, Zero)
+        Notify (\_SB.PCI0.UHC2, Zero)
+        Notify (\_SB.PCI0.UHC3, Zero)
+        Notify (\_SB.PCI0.UHC4, Zero)
+        Notify (\_SB.PCI0.UHC5, Zero)
+        Notify (\_SB.PCI0.UHC6, Zero)
         Return (Package (0x02)
         {
             Zero, 
@@ -348,44 +348,44 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
 
         Method (_L03, 0, NotSerialized)
         {
-            Notify (\_SB.PCI0.USB0, 0x02)
+            Notify (\_SB.PCI0.UHC1, 0x02)
             Notify (\_SB.PWRB, 0x02)
         }
 
         Method (_L04, 0, NotSerialized)
         {
-            Notify (\_SB.PCI0.USB1, 0x02)
+            Notify (\_SB.PCI0.UHC2, 0x02)
             Notify (\_SB.PWRB, 0x02)
         }
 
         Method (_L0C, 0, NotSerialized)
         {
-            Notify (\_SB.PCI0.USB2, 0x02)
+            Notify (\_SB.PCI0.UHC3, 0x02)
             Notify (\_SB.PWRB, 0x02)
         }
 
         Method (_L0E, 0, NotSerialized)
         {
-            Notify (\_SB.PCI0.USB3, 0x02)
+            Notify (\_SB.PCI0.UHC4, 0x02)
             Notify (\_SB.PWRB, 0x02)
         }
 
         Method (_L05, 0, NotSerialized)
         {
-            Notify (\_SB.PCI0.USB4, 0x02)
+            Notify (\_SB.PCI0.UHC5, 0x02)
             Notify (\_SB.PWRB, 0x02)
         }
 
         Method (_L20, 0, NotSerialized)
         {
-            Notify (\_SB.PCI0.USB5, 0x02)
+            Notify (\_SB.PCI0.UHC6, 0x02)
             Notify (\_SB.PWRB, 0x02)
         }
 
         Method (_L0D, 0, NotSerialized)
         {
-            Notify (\_SB.PCI0.USBE, 0x02)
-            Notify (\_SB.PCI0.USE2, 0x02)
+            Notify (\_SB.PCI0.EHC1, 0x02)
+            Notify (\_SB.PCI0.EHC2, 0x02)
             Notify (\_SB.PWRB, 0x02)
             Notify (\_SB.PCI0.HDEF, 0x02)
             Notify (\_SB.PCI0.IGBE, 0x02)
@@ -435,6 +435,16 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
 
     Scope (_SB)
     {
+        Method (_INI, 0, NotSerialized) {
+            // Fix EHCI Wake Up @ Boot
+            Store (One, ^PCI0.EHC1.WRTA)
+            Store (0x19,^PCI0.EHC1.PMES) // Underpower patch
+            Store (Zero,^PCI0.EHC1.WRTA)
+            Store (One, ^PCI0.EHC2.WRTA)
+            Store (0x19,^PCI0.EHC2.PMES) // Underpowered patch
+            Store (Zero,^PCI0.EHC2.WRTA)
+        }
+
         Device (PWRB)
         {
             Name (_CID, EisaId ("PNP0C0C"))
@@ -3270,7 +3280,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 })
             }
 
-            Device (USB0)
+            Device (UHC1) // Rename from USB0
             {
                 Name (_ADR, 0x001D0000)
                 Method (_S3D, 0, NotSerialized)
@@ -3283,14 +3293,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     Return (0x03)
                 }
 
-                Name (_PRW, Package (0x02)
-                {
-                    0x03, 
-                    0x03
-                })
+                Name (_PRW, Package (0x02) { 0x03, 0x03 })
             }
 
-            Device (USB1)
+            Device (UHC2) // Rename from USB1
             {
                 Name (_ADR, 0x001D0001)
                 Method (_S3D, 0, NotSerialized)
@@ -3303,14 +3309,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     Return (0x03)
                 }
 
-                Name (_PRW, Package (0x02)
-                {
-                    0x04, 
-                    0x03
-                })
+                Name (_PRW, Package (0x02) { 0x04, 0x03 })
             }
 
-            Device (USB2)
+            Device (UHC3) // Rename from USB2
             {
                 Name (_ADR, 0x001D0002)
                 Method (_S3D, 0, NotSerialized)
@@ -3323,14 +3325,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     Return (0x03)
                 }
 
-                Name (_PRW, Package (0x02)
-                {
-                    0x0C, 
-                    0x03
-                })
+                Name (_PRW, Package (0x02) { 0x0C, 0x03 })
             }
 
-            Device (USB3)
+            Device (UHC4) // Rename from USB3
             {
                 Name (_ADR, 0x001A0000)
                 Method (_S3D, 0, NotSerialized)
@@ -3343,14 +3341,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     Return (0x03)
                 }
 
-                Name (_PRW, Package (0x02)
-                {
-                    0x0E, 
-                    0x03
-                })
+                Name (_PRW, Package (0x02) { 0x0E, 0x03 })
             }
 
-            Device (USB4)
+            Device (UHC5) // Rename from USB4
             {
                 Name (_ADR, 0x001A0001)
                 Method (_S3D, 0, NotSerialized)
@@ -3363,14 +3357,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     Return (0x03)
                 }
 
-                Name (_PRW, Package (0x02)
-                {
-                    0x05, 
-                    0x03
-                })
+                Name (_PRW, Package (0x02) { 0x05, 0x03 })
             }
 
-            Device (USB5)
+            Device (UHC6) // Rename from USB5
             {
                 Name (_ADR, 0x001A0002)
                 Method (_S3D, 0, NotSerialized)
@@ -3383,14 +3373,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     Return (0x03)
                 }
 
-                Name (_PRW, Package (0x02)
-                {
-                    0x20, 
-                    0x03
-                })
+                Name (_PRW, Package (0x02) { 0x20, 0x03 })
             }
 
-            Device (USBE)
+            Device (EHC1) // Rename from USBE
             {
                 Name (_ADR, 0x001D0007)
                 Method (_S3D, 0, NotSerialized)
@@ -3403,14 +3389,13 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     Return (0x03)
                 }
 
-                Name (_PRW, Package (0x02)
-                {
-                    0x0D, 
-                    0x03
-                })
+                Name (_PRW, Package (0x02) { 0x0D, 0x03 })
+                // To fix EHCI wake up
+                OperationRegion (PWRC, PCI_Config, 0x52, 0x2F)
+                Field (PWRC, ByteAcc, NoLock, Preserve) { , 11, PMES, 5, Offset (0x2E), WRTA, 1 }
             }
 
-            Device (USE2)
+            Device (EHC2) // Rename from USE2
             {
                 Name (_ADR, 0x001A0007)
                 Method (_S3D, 0, NotSerialized)
@@ -3423,11 +3408,10 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     Return (0x03)
                 }
 
-                Name (_PRW, Package (0x02)
-                {
-                    0x0D, 
-                    0x03
-                })
+                Name (_PRW, Package (0x02) { 0x0D, 0x03 })
+                // To fix EHCI wake up
+                OperationRegion (PWRC, PCI_Config, 0x52, 0x2F)
+                Field (PWRC, ByteAcc, NoLock, Preserve) { , 11, PMES, 5, Offset (0x2E), WRTA, 1 }
             }
 
             Device (IDE1)

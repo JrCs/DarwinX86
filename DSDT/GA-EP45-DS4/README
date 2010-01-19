@@ -8,6 +8,7 @@ Here you find the dsdt source file for the Gigabyte GA-EP45-DS4 Motherboard
 - Add section to use Vanilla High Definition Audio kext in Leopard 10.5.7
 - Activation of Power Button
 - Shutdown Fix
+- EHCI USB Ports sleeping fix
 
 Other infos:
 - Don't try to force pciroot to be 0 because it can cause some problems like the impossible to use an Atheros based PCI WLAN board with Gigabyte EP45 motherboards
