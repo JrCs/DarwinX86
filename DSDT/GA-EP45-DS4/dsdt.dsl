@@ -541,7 +541,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                         0x00100000,         // Range Minimum
                         0xFEBFFFFF,         // Range Maximum
                         0x00000000,         // Translation Offset
-                        0xFFF00000,         // Length
+                        0xFEB00000,         // Length
                         ,, _Y00, AddressRangeMemory, TypeStatic)
                 })
                 CreateDWordField (BUF0, _Y00._MIN, TCMM)
