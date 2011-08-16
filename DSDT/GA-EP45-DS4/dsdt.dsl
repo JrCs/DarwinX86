@@ -4257,16 +4257,16 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
 
                 Method (_DSM, 4, NotSerialized)
                 {
-                     Store (Package ()
-                     {
-                        "built-in",          Buffer(One) { 0x0 },
-                        "codec-id",          Buffer() { 0x85, 0x08, 0xEC, 0x10 },
-                        "layout-id",         Buffer() { 0x79, 0x03, 0x00, 0x00 },
-                        "device-type",       Buffer() { "Realtek ALC889a" },
-                        "PinConfigurations", Buffer(One) { 0x0 }
-                     }, Local0)
-                     DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
-                     Return (Local0)
+                    Store (Package ()
+                    {
+                        "built-in",          Buffer (One)  { 0x01 },
+                        "codec-id",          Buffer () { 0x85, 0x08, 0xEC, 0x10 },
+                        "layout-id",         Buffer () { 0x75, 0x03, 0x00, 0x00 }, // 885
+                        "device-type",       Buffer () { "Realtek ALC889a" },
+                        "PinConfigurations", Buffer (One) { 0x0 }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
                 }
             }
 
