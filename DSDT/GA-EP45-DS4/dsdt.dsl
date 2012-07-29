@@ -4261,9 +4261,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     {
                         "built-in",          Buffer (One)  { 0x01 },
                         "codec-id",          Buffer () { 0x85, 0x08, 0xEC, 0x10 },
-                        "layout-id",         Buffer () { 0x75, 0x03, 0x00, 0x00 }, // 885
+                        "layout-id",         Buffer () { 0x0c, 0x00, 0x00, 0x00 }, // layout-id 12
                         "device-type",       Buffer () { "Realtek ALC889a" },
-                        "PinConfigurations", Buffer (One) { 0x0 }
+                        "PinConfigurations", Buffer (Zero) {}
                     }, Local0)
                     DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
                     Return (Local0)
