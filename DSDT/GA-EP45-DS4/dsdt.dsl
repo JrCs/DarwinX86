@@ -465,7 +465,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
         {
             Name (_HID, EisaId ("PNP0A03"))
             Name (_ADR, Zero)
-            Name (_UID, One)
+            Name (_UID, Zero)
             Name (_BBN, Zero)
             Method (_S3D, 0, NotSerialized)
             {
