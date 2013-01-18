@@ -1000,6 +1000,15 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 }
             }
 
+            Device (PEG0)
+            {
+               Name (_ADR, 0x00010000)
+               Device (GFX0)
+               {
+                    Name (_ADR, Zero)
+               }
+            }
+
             Device (PEX0)
             {
                 Name (_ADR, 0x001C0000)
