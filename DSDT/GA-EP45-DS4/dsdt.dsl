@@ -3416,6 +3416,22 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 // To fix EHCI wake up
                 OperationRegion (PWRC, PCI_Config, 0x52, 0x2F)
                 Field (PWRC, ByteAcc, NoLock, Preserve) { , 11, PMES, 5, Offset (0x2E), WRTA, 1 }
+
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package ()
+                    {
+                            // Inject the current that can be used on the USB Ports
+                            "AAPL,current-available",         2100, // 2100mA
+                            "AAPL,current-extra",             2700, // 2700mA
+                            "AAPL,current-extra-in-sleep",    2700, // 2700mA
+                            "AAPL,max-port-current-in-sleep", 2100, // 2100mA
+                            "AAPL,device-internal",  0x02,
+                            Buffer(One) { 0x0 }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
             }
 
             Device (EHC2) // Rename from USE2
@@ -3435,6 +3451,22 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 // To fix EHCI wake up
                 OperationRegion (PWRC, PCI_Config, 0x52, 0x2F)
                 Field (PWRC, ByteAcc, NoLock, Preserve) { , 11, PMES, 5, Offset (0x2E), WRTA, 1 }
+
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package ()
+                    {
+                            // Inject the current that can be used on the USB Ports
+                            "AAPL,current-available",         2100, // 2100mA
+                            "AAPL,current-extra",             2700, // 2700mA
+                            "AAPL,current-extra-in-sleep",    2700, // 2700mA
+                            "AAPL,max-port-current-in-sleep", 2100, // 2100mA
+                            "AAPL,device-internal",  0x02,
+                            Buffer(One) { 0x0 }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
             }
 
             Device (IDE1)
