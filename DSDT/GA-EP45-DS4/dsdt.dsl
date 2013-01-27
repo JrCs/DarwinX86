@@ -2254,7 +2254,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     })
                 }
 
-                Device (PIC)
+                Device (IPIC)
                 {
                     Name (_HID, EisaId ("PNP0000"))
                     Name (_CRS, ResourceTemplate ()
@@ -2311,7 +2311,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     })
                 }
 
-                Device (TMR)
+                Device (TIMR)
                 {
                     Name (_HID, EisaId ("PNP0100"))
                     Name (ATT5, ResourceTemplate ()
@@ -2424,7 +2424,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     })
                 }
 
-                Device (COPR)
+                Device (MATH)
                 {
                     Name (_HID, EisaId ("PNP0C04"))
                     Name (_CRS, ResourceTemplate ()
