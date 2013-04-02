@@ -1,10 +1,15 @@
-dsdt.aml: dsdt.dsl
-	iasl -vo -w1 -tc dsdt.dsl && rm dsdt.hex
+SRCS = dsdt.dsl ssdt.dsl
+AMLS = $(patsubst %.dsl,%.aml,$(SRCS))
 
-install: dsdt.aml
-	@cp -v dsdt.aml /Volumes/BootLoader/EFI/ACPI/patched/
+.PHONY: all
+
+all: $(AMLS)
+
+%.aml: %.dsl
+	iasl -vo -we -w1 $<
+
+install: $(AMLS)
+	@cp -v $^ /Volumes/BootLoader/EFI/ACPI/patched/
 
 clean:
-	rm -f *.hex *~ dsdt.aml
-
-all: dsdt.aml
+	rm -f *~ $(AMLS)
