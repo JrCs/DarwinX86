@@ -18,6 +18,48 @@
  */
 DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
 {
+
+    // Patch _OSI -> OOSI (from clover) We must emulate Windows XP
+    Name (WXP1, "Windows 2001")
+    Method (GET9, 2, NotSerialized)
+    {
+        CreateByteField (Arg0, Arg1, TCH9)
+        Return (TCH9)
+    }
+
+    Method (STR9, 2, NotSerialized)
+    {
+        Name (STR8, Buffer (0x50) {})
+        Name (STR9, Buffer (0x50) {})
+        Store (Arg0, STR8)
+        Store (Arg1, STR9)
+        Store (Zero, Local0)
+        Store (One, Local1)
+        While (Local1)
+        {
+            Store (GET9 (STR8, Local0), Local1)
+            Store (GET9 (STR9, Local0), Local2)
+            If (LNotEqual (Local1, Local2))
+            {
+                Return (Zero)
+            }
+
+            Increment (Local0)
+        }
+
+        Return (One)
+    }
+
+    Method (OOSI, 1, NotSerialized)
+    {
+        If (STR9 (WXP1, Arg0))
+        {
+            Return (One)
+        }
+
+        Return (Zero)
+    }
+
     Scope (_PR)
     {
         Processor (CPU0, 0x00, 0x00000410, 0x06) {}
@@ -2090,9 +2132,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     {
                         If (STRC (_OS, "Microsoft Windows NT"))
                         {
-                            If (CondRefOf (\_OSI, Local0))
+                            If (CondRefOf (\OOSI, Local0)) // _OSI renamed to OOSI
                             {
-                                If (_OSI ("Windows 2001"))
+                                If (OOSI ("Windows 2001")) // _OSI renamed to OOSI
                                 {
                                     Store (0x59, SMIP)
                                     Store (Zero, OSFL)
