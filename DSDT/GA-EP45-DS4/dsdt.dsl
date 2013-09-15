@@ -3502,9 +3502,23 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                 }
             }
 
-            Device (IDE1)
+            Device (SATA) // Rename from IDE1
             {
                 Name (_ADR, 0x001F0002)
+                Name (H15F, Zero)
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package ()
+                    {
+                            "AAPL,slot-name", Buffer() { "Built In" },
+                            "device_type",    Buffer() { "AHCI Controller" },
+                            "model",          Buffer() { "ICH10R SATA/AHCI Controller" },
+                            "name",           Buffer() { "ICH10R SATA/AHCI Controller" }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
+
                 OperationRegion (PCI, PCI_Config, 0x40, 0x20)
                 Field (PCI, DWordAcc, NoLock, Preserve)
                 {
@@ -3528,12 +3542,28 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                     FAS1,   2
                 }
 
-                Device (PRIM)
+                Device (PRT0)
                 {
                     Name (_ADR, Zero)
+                    Method (_DSM, 4, NotSerialized)
+                    {
+                        Store (Package ()
+                        {
+                                "io-device-location", Buffer() { "Int 1" }
+                        }, Local0)
+                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                        Return (Local0)
+                    }
+
                     Method (_GTM, 0, NotSerialized)
                     {
                         Store (GTM (ITM0, SIT0, UDC0, UDT0, ICF0, FAS0), Local0)
+                        Return (Local0)
+                    }
+
+                    Method (_GTF, 0, NotSerialized)
+                    {
+                        Store (GTF0 (ITM0, SIT0, UDC0, UDT0, ICF0, H15F, FAS0), Local0)
                         Return (Local0)
                     }
 
@@ -3551,36 +3581,71 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                         Store (ICF, ICF0)
                         Store (FAS, FAS0)
                     }
+                }
 
-                    Device (DRV0)
+                Device (PRT1)
+                {
+                    Name (_ADR, One)
+                    Method (_DSM, 4, NotSerialized)
                     {
-                        Name (_ADR, Zero)
-                        Name (H15F, Zero)
-                        Method (_GTF, 0, NotSerialized)
+                        Store (Package ()
                         {
-                            Store (GTF0 (ITM0, SIT0, UDC0, UDT0, ICF0, H15F, FAS0), Local0)
-                            Return (Local0)
-                        }
+                                "io-device-location", Buffer() { "Int 2" }
+                        }, Local0)
+                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                        Return (Local0)
                     }
 
-                    Device (DRV1)
+                    Method (_GTM, 0, NotSerialized)
                     {
-                        Name (_ADR, One)
-                        Name (H15F, Zero)
-                        Method (_GTF, 0, NotSerialized)
-                        {
-                            Store (GTF1 (ITM0, SIT0, UDC0, UDT0, ICF0, H15F, FAS0), Local0)
-                            Return (Local0)
-                        }
+                        Store (GTM (ITM0, SIT0, UDC0, UDT0, ICF0, FAS0), Local0)
+                        Return (Local0)
+                    }
+
+                    Method (_GTF, 0, NotSerialized)
+                    {
+                        Store (GTF1 (ITM0, SIT0, UDC0, UDT0, ICF0, H15F, FAS0), Local0)
+                        Return (Local0)
+                    }
+
+                    Method (_STM, 3, NotSerialized)
+                    {
+                        Store (STM (Arg0, Arg1, Arg2), Local0)
+                        CreateDWordField (Local0, Zero, ITM)
+                        CreateDWordField (Local0, 0x04, SIT)
+                        CreateDWordField (Local0, 0x08, UDC)
+                        CreateDWordField (Local0, 0x0C, UDT)
+                        CreateDWordField (Local0, 0x10, ICF)
+                        CreateDWordField (Local0, 0x14, FAS)
+                        Store (UDC, UDC0)
+                        Store (UDT, UDT0)
+                        Store (ICF, ICF0)
+                        Store (FAS, FAS0)
                     }
                 }
 
-                Device (SECD)
+                Device (PRT2)
                 {
-                    Name (_ADR, One)
+                    Name (_ADR, 0x02)
+                    Method (_DSM, 4, NotSerialized)
+                    {
+                        Store (Package ()
+                        {
+                                "io-device-location", Buffer() { "Int 3" }
+                        }, Local0)
+                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                        Return (Local0)
+                    }
+
                     Method (_GTM, 0, NotSerialized)
                     {
                         Store (GTM (ITM1, SIT1, UDC1, UDT1, ICF1, FAS1), Local0)
+                        Return (Local0)
+                    }
+
+                    Method (_GTF, 0, NotSerialized)
+                    {
+                        Store (GTF0 (ITM1, SIT1, UDC1, UDT1, ICF1, H15F, FAS1), Local0)
                         Return (Local0)
                     }
 
@@ -3598,27 +3663,46 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
                         Store (ICF, ICF1)
                         Store (FAS, FAS1)
                     }
+                }
 
-                    Device (DRV0)
+                Device (PRT3)
+                {
+                    Name (_ADR, 0x03)
+                    Method (_DSM, 4, NotSerialized)
                     {
-                        Name (_ADR, Zero)
-                        Name (H15F, Zero)
-                        Method (_GTF, 0, NotSerialized)
+                        Store (Package ()
                         {
-                            Store (GTF0 (ITM1, SIT1, UDC1, UDT1, ICF1, H15F, FAS1), Local0)
-                            Return (Local0)
-                        }
+                                "io-device-location", Buffer() { "Int 4" }
+                        }, Local0)
+                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                        Return (Local0)
                     }
 
-                    Device (DRV1)
+                    Method (_GTM, 0, NotSerialized)
                     {
-                        Name (_ADR, One)
-                        Name (H15F, Zero)
-                        Method (_GTF, 0, NotSerialized)
-                        {
-                            Store (GTF1 (ITM1, SIT1, UDC1, UDT1, ICF1, H15F, FAS1), Local0)
-                            Return (Local0)
-                        }
+                        Store (GTM (ITM1, SIT1, UDC1, UDT1, ICF1, FAS1), Local0)
+                        Return (Local0)
+                    }
+
+                    Method (_GTF, 0, NotSerialized)
+                    {
+                        Store (GTF1 (ITM1, SIT1, UDC1, UDT1, ICF1, H15F, FAS1), Local0)
+                        Return (Local0)
+                    }
+
+                    Method (_STM, 3, NotSerialized)
+                    {
+                        Store (STM (Arg0, Arg1, Arg2), Local0)
+                        CreateDWordField (Local0, Zero, ITM)
+                        CreateDWordField (Local0, 0x04, SIT)
+                        CreateDWordField (Local0, 0x08, UDC)
+                        CreateDWordField (Local0, 0x0C, UDT)
+                        CreateDWordField (Local0, 0x10, ICF)
+                        CreateDWordField (Local0, 0x14, FAS)
+                        Store (UDC, UDC1)
+                        Store (UDT, UDT1)
+                        Store (ICF, ICF1)
+                        Store (FAS, FAS1)
                     }
                 }
             }
