@@ -494,9 +494,9 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
             Store (Zero,^PCI0.EHC2.WRTA)
         }
 
-        Device (PWRB)
+        Device (PWRB) // PWRB: Power Button
         {
-            Name (_CID, EisaId ("PNP0C0C"))
+            Name (_HID, EisaId ("PNP0C0C")) // _HID: Hardware ID
             Method (_STA, 0, NotSerialized)
             {
                 Return (0x0B)
