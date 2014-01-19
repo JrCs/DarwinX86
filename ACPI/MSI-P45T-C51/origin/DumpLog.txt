@@ -1,0 +1,32 @@
+18:981  17:164  Found BIOS RSDP at F9C30
+18:981  0:000  Saving ACPI tables from RSDP F9C30 to EFI\CLOVER\ACPI\origin ...
+18:981  0:000   F9C30: 'RSD PTR ', Rev: 0 (Acpi 1.0), Len: 20 -> RSDP.aml
+18:986  0:005    (Rsdt: CFF90000)
+18:986  0:000    CFF90000: 'RSDT', 'A7519200', Rev: 1, Len: 64 -> RSDT.aml
+18:992  0:006    Tables in Rsdt: 7
+18:992  0:000    0. CFF90200: 'FACP', 'A7519200', Rev: 1, Len: 132 -> FACP.aml
+18:998  0:006        (Dsdt: CFF90440, Facs: CFF9E000)
+18:998  0:000        CFF90440: 'DSDT', 'A7519200', Rev: 1, Len: 28739 -> DSDT.aml
+19:013  0:014        CFF9E000: 'FACS', Ver: 1, Len: 64 -> FACS.aml
+19:024  0:010    1. CFF90390: 'APIC', 'A7519200', Rev: 1, Len: 108 -> APIC.aml
+19:036  0:012    2. CFF90400: 'MCFG', 'OEMMCFG ', Rev: 1, Len: 60 -> MCFG.aml
+19:046  0:009    3. CFF9E040: 'OEMB', 'A7519200', Rev: 1, Len: 114 -> OEMB.aml
+19:055  0:009    4. CFF9A440: 'HPET', 'OEMHPET ', Rev: 1, Len: 56 -> HPET.aml
+19:066  0:010    5. CFF9E0C0: 'GSCI', 'GMCHSCI ', Rev: 1, Len: 8228 -> GSCI.aml
+19:075  0:009    6. CFFA08E0: 'SSDT', 'CpuPm', Rev: 1, Len: 867 -> SSDT-0.aml
+19:084  0:009  Found UEFI Acpi 2.0 RSDP at CFBBA000
+19:084  0:000  Printing ACPI tables from RSDP CFBBA000 ...
+19:084  0:000   CFBBA000: 'RSD PTR ', Rev: 0 (Acpi 1.0), Len: 20
+19:084  0:000    (Rsdt: CFF90000)
+19:084  0:000    CFF90000: 'RSDT', 'A7519200', Rev: 1, Len: 64
+19:084  0:000    Tables in Rsdt: 7
+19:084  0:000    0. CFF90200: 'FACP', 'A7519200', Rev: 1, Len: 132
+19:084  0:000        (Dsdt: CFF90440, Facs: CFF9E000)
+19:084  0:000        CFF90440: 'DSDT', 'A7519200', Rev: 1, Len: 28739
+19:085  0:000        CFF9E000: 'FACS', Ver: 1, Len: 64
+19:085  0:000    1. CFF90390: 'APIC', 'A7519200', Rev: 1, Len: 108
+19:085  0:000    2. CFF90400: 'MCFG', 'OEMMCFG ', Rev: 1, Len: 60
+19:085  0:000    3. CFF9E040: 'OEMB', 'A7519200', Rev: 1, Len: 114
+19:085  0:000    4. CFF9A440: 'HPET', 'OEMHPET ', Rev: 1, Len: 56
+19:085  0:000    5. CFF9E0C0: 'GSCI', 'GMCHSCI ', Rev: 1, Len: 8228
+19:085  0:000    6. CFFA08E0: 'SSDT', 'CpuPm', Rev: 1, Len: 867
