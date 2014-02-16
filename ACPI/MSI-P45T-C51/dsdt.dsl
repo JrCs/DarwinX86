@@ -305,7 +305,7 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "A7519", "A7519200", 0x00000200)
                 Store (0x14, Local0)
             }
 
-            If (_OSI ("Darwin"))
+            If (LOr(_OSI("Darwin"), _OSI("Windows 2006")))
             {
                 Store (0x15, Local0)
             }
