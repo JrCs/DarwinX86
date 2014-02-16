@@ -28,6 +28,11 @@ DefinitionBlock ("ssdt.aml", "SSDT", 1, "APPLE ", "general", 0x00001000)
             {
                 Name (PWD5, Package() { 0x0d, 0x05} ) // Alias for _PRW
 
+                Device (MCHC) // Usefull for Power Management
+                {
+                    Name (_ADR, Zero)
+                }
+
                 Device (HDEF) // Adding audio device
                 {
                     Name (_ADR, 0x001B0000)
