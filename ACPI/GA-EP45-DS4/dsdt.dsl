@@ -313,6 +313,22 @@ DefinitionBlock ("dsdt.aml", "DSDT", 1, "GBT   ", "GBTUACPI", 0x00001000)
 
     Method (_WAK, 1, NotSerialized)
     {
+        // In 10.8.5 and perhaps later versions of OS X, DSDT method _WAK
+        // called after resuming from S3 suspend (Sleep, or suspend to RAM),
+        // is called with garbage in Arg0, where it should be a value
+        // representing the sleep state being left (1-5).
+        //
+        // This causes problems for code in DSDT _WAK method which expects
+        // and checks against Arg0==3 for wake from sleep to turn on various
+        // devices or restore internal state to a working state.
+        //
+        // This patch from RehabMan force an an out-of-range Arg0 to 3.
+        If (LOr (LLess (Arg0, One), LGreater (Arg0, 5)))
+        {
+            Store(3, Arg0)
+        }
+        // End of patch
+
         Store (0xFF, DBG1)
         If (LEqual (Arg0, 0x03))
         {
